@@ -94,11 +94,11 @@ describe GildedRose do
     end
 
     it "does not have a quality greater than 50" do
-      pending("confirmation that this spec should be failing")
-      gilded_rose = GildedRose.new(Item.new("Backstage passes to a TAFKAL80ETC concert", 50, 20))
-      35.times { gilded_rose.update_quality }
-      expect(pass.sell_in).to eq(15)
-      expect(pass.quality).to eq(50)
+      long_gilded_rose = GildedRose.new(Item.new("Backstage passes to a TAFKAL80ETC concert", 50, 20))
+      35.times { long_gilded_rose.update_quality }
+      long_pass = long_gilded_rose.items.first
+      expect(long_pass.sell_in).to eq(15)
+      expect(long_pass.quality).to eq(50)
     end
   end
 
