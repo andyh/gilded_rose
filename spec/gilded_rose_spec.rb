@@ -93,13 +93,15 @@ describe GildedRose do
       expect(pass.quality).to eq(0)
     end
 
-    it "does not have a quality greater than 50" do
-      long_gilded_rose = GildedRose.new(Item.new("Backstage passes to a TAFKAL80ETC concert", 50, 20))
-      35.times { long_gilded_rose.update_quality }
-      long_pass = long_gilded_rose.items.first
-      expect(long_pass.sell_in).to eq(15)
-      expect(long_pass.quality).to eq(50)
+    describe "which have a long sell in date" do
+      let(:gilded_rose) { GildedRose.new(Item.new("Backstage passes to a TAFKAL80ETC concert", 50, 20)) }
+      it "does not have a quality greater than 50" do
+        33.times { gilded_rose.update_quality }
+        expect(pass.sell_in).to eq(17)
+        expect(pass.quality).to eq(50)
+      end
     end
+
   end
 
   describe "Conjured Mana Cake" do
