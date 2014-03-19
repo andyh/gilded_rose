@@ -19,26 +19,26 @@ class GildedRose
     @items.each do |item|
       next if item.name == "Sulfuras, Hand of Ragnaros"
 
-      if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert")
-        normal_item_calculation(item)
-      else
+      if (item.name == "Aged Brie" || item.name == "Backstage passes to a TAFKAL80ETC concert")
         increasing_value_calculation(item)
+      else
+        normal_item_calculation(item)
       end
 
       decrease_sell_in_value(item)
 
       if (item.sell_in < 0)
-        if (item.name != "Aged Brie")
-          if (item.name != "Backstage passes to a TAFKAL80ETC concert")
+        if (item.name == "Aged Brie")
+          if (item.quality < 50)
+            increase_quality_value(item)
+          end
+        else
+          if (item.name == "Backstage passes to a TAFKAL80ETC concert")
+            make_worthless(item)
+          else
             if (item.quality > 0)
               decrease_quality_value(item)
             end
-          else
-            make_worthless(item)
-          end
-        else
-          if (item.quality < 50)
-            increase_quality_value(item)
           end
         end
       end
