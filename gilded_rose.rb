@@ -16,29 +16,29 @@ class GildedRose
 
   def update_quality
 
-    for i in 0..(@items.size-1)
-      if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-        normal_item_calculation(i)
+    @items.each do |item|
+      if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert")
+        normal_item_calculation(item)
       else
-        increasing_value_calculation(i)
+        increasing_value_calculation(item)
       end
-      if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-        decrease_sell_in_value(i)
+      if (item.name != "Sulfuras, Hand of Ragnaros")
+        decrease_sell_in_value(item)
       end
-      if (@items[i].sell_in < 0)
-        if (@items[i].name != "Aged Brie")
-          if (@items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].quality > 0)
-              if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-                decrease_quality_value(i)
+      if (item.sell_in < 0)
+        if (item.name != "Aged Brie")
+          if (item.name != "Backstage passes to a TAFKAL80ETC concert")
+            if (item.quality > 0)
+              if (item.name != "Sulfuras, Hand of Ragnaros")
+                decrease_quality_value(item)
               end
             end
           else
-            @items[i].quality = @items[i].quality - @items[i].quality
+            make_worthless(item)
           end
         else
-          if (@items[i].quality < 50)
-            increase_quality_value(i)
+          if (item.quality < 50)
+            increase_quality_value(item)
           end
         end
       end
@@ -56,46 +56,49 @@ class GildedRose
     ]
   end
 
-  def normal_item_calculation(i)
-    if (@items[i].quality > 0)
-      if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-        if (@items[i].name.include? "Conjured")
-          @items[i].quality = @items[i].quality - 2
+  def normal_item_calculation(item)
+    if (item.quality > 0)
+      if (item.name != "Sulfuras, Hand of Ragnaros")
+        if (item.name.include? "Conjured")
+          item.quality = item.quality - 2
         else
-          @items[i].quality = @items[i].quality - 1
-        end
-      end
-    end
-
-  end
-
-  def increasing_value_calculation(i)
-    if (@items[i].quality < 50)
-      @items[i].quality = @items[i].quality + 1
-      if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
-        if (@items[i].sell_in < 11)
-          if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
-          end
-        end
-        if (@items[i].sell_in < 6)
-          if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
-          end
+          item.quality = item.quality - 1
         end
       end
     end
   end
 
-  def decrease_sell_in_value(i)
-    @items[i].sell_in = @items[i].sell_in - 1
+  def increasing_value_calculation(item)
+    if (item.quality < 50)
+      item.quality = item.quality + 1
+      if (item.name == "Backstage passes to a TAFKAL80ETC concert")
+        if (item.sell_in < 11)
+          if (item.quality < 50)
+            item.quality = item.quality + 1
+          end
+        end
+        if (item.sell_in < 6)
+          if (item.quality < 50)
+            item.quality = item.quality + 1
+          end
+        end
+      end
+    end
   end
 
-  def decrease_quality_value(i)
-    @items[i].quality = @items[i].quality - 1
+  def decrease_sell_in_value(item)
+    item.sell_in = item.sell_in - 1
   end
 
-  def increase_quality_value(i)
-    @items[i].quality = @items[i].quality + 1
+  def decrease_quality_value(item)
+    item.quality = item.quality - 1
+  end
+
+  def increase_quality_value(item)
+    item.quality = item.quality + 1
+  end
+
+  def make_worthless(item)
+    item.quality = item.quality - item.quality
   end
 end
