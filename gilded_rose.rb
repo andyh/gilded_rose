@@ -18,41 +18,19 @@ class GildedRose
 
     for i in 0..(@items.size-1)
       if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-        if (@items[i].quality > 0)
-          if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-            if (@items[i].name.include? "Conjured")
-              @items[i].quality = @items[i].quality - 2
-            else
-              @items[i].quality = @items[i].quality - 1
-            end
-          end
-        end
+        normal_item_calculation(i)
       else
-        if (@items[i].quality < 50)
-          @items[i].quality = @items[i].quality + 1
-          if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].sell_in < 11)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-            if (@items[i].sell_in < 6)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-          end
-        end
+        increasing_value_calculation(i)
       end
       if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-        @items[i].sell_in = @items[i].sell_in - 1;
+        decrease_sell_in_value(i)
       end
       if (@items[i].sell_in < 0)
         if (@items[i].name != "Aged Brie")
           if (@items[i].name != "Backstage passes to a TAFKAL80ETC concert")
             if (@items[i].quality > 0)
               if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-                @items[i].quality = @items[i].quality - 1
+                decrease_quality_value(i)
               end
             end
           else
@@ -60,7 +38,7 @@ class GildedRose
           end
         else
           if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
+            increase_quality_value(i)
           end
         end
       end
@@ -76,5 +54,48 @@ class GildedRose
      Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 20),
      Item.new("Conjured Mana Cake", 3, 6),
     ]
+  end
+
+  def normal_item_calculation(i)
+    if (@items[i].quality > 0)
+      if (@items[i].name != "Sulfuras, Hand of Ragnaros")
+        if (@items[i].name.include? "Conjured")
+          @items[i].quality = @items[i].quality - 2
+        else
+          @items[i].quality = @items[i].quality - 1
+        end
+      end
+    end
+
+  end
+
+  def increasing_value_calculation(i)
+    if (@items[i].quality < 50)
+      @items[i].quality = @items[i].quality + 1
+      if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
+        if (@items[i].sell_in < 11)
+          if (@items[i].quality < 50)
+            @items[i].quality = @items[i].quality + 1
+          end
+        end
+        if (@items[i].sell_in < 6)
+          if (@items[i].quality < 50)
+            @items[i].quality = @items[i].quality + 1
+          end
+        end
+      end
+    end
+  end
+
+  def decrease_sell_in_value(i)
+    @items[i].sell_in = @items[i].sell_in - 1
+  end
+
+  def decrease_quality_value(i)
+    @items[i].quality = @items[i].quality - 1
+  end
+
+  def increase_quality_value(i)
+    @items[i].quality = @items[i].quality + 1
   end
 end
