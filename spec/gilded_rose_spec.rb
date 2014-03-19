@@ -1,5 +1,4 @@
 require './gilded_rose.rb'
-require "rspec"
 
 describe GildedRose do
   describe "+5 Dexterity Vest" do
