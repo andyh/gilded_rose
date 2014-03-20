@@ -12,7 +12,6 @@ class GildedRose
   end
 
   def update_quality
-
     @items.each do |item|
       next if item.name == "Sulfuras, Hand of Ragnaros"
 
@@ -25,18 +24,13 @@ class GildedRose
       decrease_sell_in_value(item)
 
       if (item.sell_in < 0)
-        if (item.name == "Aged Brie")
-          if (item.quality < 50)
-            increase_quality_value(item)
-          end
+        case item.name
+        when "Aged Brie"
+          increase_quality_value(item)
+        when "Backstage passes to a TAFKAL80ETC concert"
+          make_worthless(item)
         else
-          if (item.name == "Backstage passes to a TAFKAL80ETC concert")
-            make_worthless(item)
-          else
-            if (item.quality > 0)
-              decrease_quality_value(item)
-            end
-          end
+          decrease_quality_value(item)
         end
       end
     end
@@ -54,43 +48,32 @@ class GildedRose
   end
 
   def normal_item_calculation(item)
-    if (item.quality > 0)
-      if (item.name.include? "Conjured")
-        item.quality = item.quality - 2
-      else
-        item.quality = item.quality - 1
-      end
+    if (item.name.include? "Conjured")
+      decrease_quality_value(item, 2)
+    else
+      decrease_quality_value(item)
     end
   end
 
   def increasing_value_calculation(item)
-    if (item.quality < 50)
-      item.quality = item.quality + 1
-      if (item.name == "Backstage passes to a TAFKAL80ETC concert")
-        if (item.sell_in < 11)
-          if (item.quality < 50)
-            item.quality = item.quality + 1
-          end
-        end
-        if (item.sell_in < 6)
-          if (item.quality < 50)
-            item.quality = item.quality + 1
-          end
-        end
-      end
+    if (item.name == "Backstage passes to a TAFKAL80ETC concert")
+        by = 2 if (item.sell_in < 11)
+        by = 3 if (item.sell_in < 6)
     end
+
+    increase_quality_value(item, by || 1)
   end
 
   def decrease_sell_in_value(item)
     item.sell_in = item.sell_in - 1
   end
 
-  def decrease_quality_value(item)
-    item.quality = item.quality - 1
+  def decrease_quality_value(item, by=1)
+    item.quality = item.quality - by if item.quality > 0
   end
 
-  def increase_quality_value(item)
-    item.quality = item.quality + 1
+  def increase_quality_value(item, by=1)
+    item.quality = item.quality + by if item.quality < 50
   end
 
   def make_worthless(item)
